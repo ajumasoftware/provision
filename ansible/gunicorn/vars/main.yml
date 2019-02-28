@@ -1,0 +1,7 @@
+---
+domain: tcart
+NAME: tcart
+DJANGODIR: /home/ubuntu/tcart
+SOCKFILE: /tmp/gunicorn.sock
+USER: ubuntu
+ACTIVATE: /home/ubuntu/virtualenv/bin/activate

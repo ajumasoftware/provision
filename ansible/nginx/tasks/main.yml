@@ -1,0 +1,33 @@
+---
+  - name: Add Nginx Repository
+    apt_repository: repo='ppa:nginx/stable' state=present
+    register: ppastable
+
+  - name: Install Nginx
+    apt: pkg=nginx state=installed update_cache=true
+    register: nginxinstalled
+    notify:
+      - Start Nginx
+
+  - name: Template /etc/nginx/sites-available/standalone.conf
+    when: nginxinstalled|success
+    register: app
+    template: src=standalone.conf.j2 dest=/etc/nginx/sites-available/standalone.conf owner=root group=root
+    when: platform == 'standalone'
+
+  - name: Copy /etc/nginx/sites-available/standalone.conf
+    when: app|success
+    file: src=/etc/nginx/sites-available/standalone.conf dest=/etc/nginx/sites-enabled/standalone.conf state=link
+    when: platform == 'standalone'
+
+  - name: Update nginx.conf
+    when: nginxinstalled|success
+    register: nginx
+    template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf owner=root group=root
+
+  - name: Disable Default Site
+    when: nginxinstalled|success
+    file: dest=/etc/nginx/sites-enabled/default state=absent
+
+  - name: Start Nginx
+    service: name=nginx state=restarted

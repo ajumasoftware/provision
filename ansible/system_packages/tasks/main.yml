@@ -1,0 +1,31 @@
+---
+  # First section is app server packages
+  - apt_repository:
+      repo: "ppa:certbot/certbot"
+    when: platform == 'standalone'
+
+  # Make sure we st overcommit to 1.
+  # DO SApecific do we need this for AWS?
+  #- name: "echo 1 > /proc/sys/vm/overcommit_memory"
+  #  shell: echo 1 > /proc/sys/vm/overcommit_memory
+  #  when: platform == 'standalone'
+
+  # Install: Python
+
+  # Install: AppServer Packages
+  - name: "install all system packages from shell"
+    shell: sudo apt-get install -y python-apt postgresql-client python3-pip htop python3-venv libffi-dev libssl-dev python-dev libxml2-dev libxslt1-dev libjpeg8-dev zlib1g-dev libxml2-dev software-properties-common python-certbot-nginx redis-server
+    register: task_result
+    until: task_result.rc == 0
+    retries: 10
+    delay: 5
+    when: platform == 'standalone'
+
+
+  
+  # Install: RedisServer Packages
+  #- name: "Install redis server apt packages"
+  #  shell: sudo apt-get install -y nginx redis-server
+  #  when: platform == 'redis'
+
+

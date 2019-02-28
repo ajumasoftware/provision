@@ -1,0 +1,8 @@
+- name: "Preemptively cleanup apt"
+  shell: sudo apt-get clean
+
+- name: "Remove old apt/lists"
+  shell: sudo rm -rf /var/lib/apt/lists/
+
+- name: "apt-get update"
+  shell: sudo apt-get update

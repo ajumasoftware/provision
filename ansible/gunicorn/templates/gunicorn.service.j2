@@ -1,0 +1,13 @@
+[Unit]
+Description=gunicorn web server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/ubuntu/
+ExecStart=/usr/bin/gunicorn_start.sh
+Restart=on-failure
+LimitNOFILE=10000
+
+[Install]
+WantedBy=multi-user.target

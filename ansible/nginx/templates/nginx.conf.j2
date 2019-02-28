@@ -1,0 +1,55 @@
+user  ubuntu admin;
+worker_processes  1;
+
+error_log  /home/ubuntu/logs/nginx.error    warn;
+
+pid        /var/run/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /home/ubuntu/logs/nginx.access   main;
+
+    # pmn - 2015-05-15
+    # disabled because of virtualbox bug http://docs.vagrantup.com/v2/synced-folders/virtualbox.html
+    sendfile        off;
+
+    keepalive_timeout  65;
+
+    ##
+    # Gzip Settings
+    ##
+
+    gzip on;
+    gzip_disable "msie6";
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+    gzip_comp_level 6;
+
+	# https://reinout.vanrees.org/weblog/2015/11/19/nginx-proxy-gzip.html
+	gzip_vary on;
+    gzip_http_version 1.0;
+
+    #gzip_types text/plain text/css text/javascript;  # Do not compress images
+    # gzip_proxied any;
+    # gzip_comp_level 6;
+    # gzip_buffers 16 8k;
+    # gzip_http_version 1.1;
+
+    open_file_cache max=1000 inactive=20s;
+    open_file_cache_valid 30s;
+    open_file_cache_min_uses 5;
+    open_file_cache_errors off;
+
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+
+}

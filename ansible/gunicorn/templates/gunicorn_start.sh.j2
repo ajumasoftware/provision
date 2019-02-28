@@ -1,0 +1,37 @@
+#!/bin/bash
+
+NAME={{NAME}}
+DJANGODIR={{DJANGODIR}}
+SOCKFILE={{SOCKFILE}}
+USER={{USER}}
+NUM_WORKERS=3
+DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:=ajumasoftware.settings}
+DJANGO_WSGI_MODULE=ajumasoftware.wsgi
+
+echo "Starting $NAME as `whoami`"
+
+# Activate the virtual environment
+cd $DJANGODIR
+source {{ACTIVATE}}
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+# Create the run directory if it doesn't exist
+RUNDIR=$(dirname $SOCKFILE)
+test -d $RUNDIR || mkdir -p $RUNDIR
+
+# Start your Django Unicorn
+# Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
+# Start gunicorn
+exec /home/ubuntu/virtualenv/bin/gunicorn {{WSGI}} \
+  --bind=unix:/tmp/gunicorn.sock \
+  --name hbxcp \
+  --workers 4 \
+  --user=ubuntu \
+  --log-level=info  \
+  --error-logfile /home/ubuntu/logs/gunicorn.error \
+  --access-logfile /home/ubuntu/logs/gunicorn.access \
+  --reload
+
+
+echo "gunicorn start for site: hbxcp"

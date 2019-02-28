@@ -1,0 +1,4 @@
+ansible_python_interpreter=/usr/bin/python3
+
+[standalone]
+3.88.230.42

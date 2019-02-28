@@ -1,0 +1,30 @@
+---
+- name: deploy ajuma on {{HOST}}
+  hosts: "{{HOST}}"
+  vars:
+    # Defaults can be overridden with --extra-vars flag
+    db_name: ajuma
+    WSGI: "ajumasoftware.wsgi:application"
+    platform: standalone
+  roles:
+    - set_facts
+    - apt_cleanup
+    - system_packages
+    #- user
+    # - hosts_file
+    # - role: postgresql
+    #  postgresql_version: 9.6
+    #  postgresql_users:
+    #    - name: ubuntu
+    #      pass: 'ajuma'
+    #  postgresql_databases:
+    #    - name: "{{ db_name }}"
+    #      owner: ubuntu
+    #  postgresql_user_privileges:
+    #    - name: ubuntu
+    #      db: "{{ db_name }}"
+    #      priv: "ALL"
+    #      role_attr_flags: "CREATEDB,CREATEROLE,SUPERUSER"
+    #- django
+    #- gunicorn
+    #- nginx
