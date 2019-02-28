@@ -10,12 +10,12 @@
     register: requirements
 
   - name: "Clone Repo"
-    git: repo=repo
-        dest=/home/ubuntu/tcart
+    git: repo=git@github.com:ajumasoftware/main-site.git
+        dest=/home/ubuntu/main-site
         accept_hostkey=yes
         force=yes
         recursive=no
-        key_file=/home/ubuntu/.ssh/home_rsa
+        key_file=/home/ubuntu/.ssh/id_rsa
     when: requirements.stat.exists == False
     become: yes
     become_user: ubuntu
@@ -65,7 +65,7 @@
     delay: 1
     register: result
     until: result|succeeded
-    when: platform == 'app' or platform == 'standalone'
+    when: platform == 'standalone'
 
   - name: "Install fixture data"
     shell: /home/ubuntu/virtualenv/bin/python3 manage.py loaddata initial.json
@@ -77,7 +77,7 @@
     delay: 1
     register: result
     until: result|succeeded
-    when: platform == 'app' or platform == 'standalone'
+    when: platform == 'standalone'
   
   - name: "run collectstatic"
     shell: /home/ubuntu/virtualenv/bin/python3 manage.py collectstatic --noinput

@@ -10,9 +10,10 @@
     requirements: /home/ubuntu/tcart/requirements.txt
   roles:
     - set_facts
-    - apt_cleanup
-    - system_packages
-    - user
+    #- apt_cleanup
+    #- system_packages
+    #- user
+
     # - hosts_file
     # - role: postgresql
     #  postgresql_version: 9.6
@@ -27,6 +28,9 @@
     #      db: "{{ db_name }}"
     #      priv: "ALL"
     #      role_attr_flags: "CREATEDB,CREATEROLE,SUPERUSER"
-    - django
+
+    - role: django
+      vars:
+         repo: git@github.com:ajumasoftware/main-site.git
     #- gunicorn
     #- nginx
