@@ -4,6 +4,7 @@ Ansible Scripts to Provision Basic Django Site:  Nginx->Gunicorn
 # Provision Steps
 
 1) Start EC2, Lightsail instance
+   - Make sure to upload your proper ssh key if it's not already in the list.
 
 2) Login and add you id_rsa to the .ssh directory
 3) Update permissions on id_rsa:  chmod 400 ~/.ssh/id_rsa
