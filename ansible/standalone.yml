@@ -13,10 +13,11 @@
     requirements: /home/ubuntu/tcart/requirements.txt
   roles:
     - set_facts
-    #- apt_cleanup
-    #- system_packages
-    #- user
+    - apt_cleanup
+    - system_packages
+    - user
 
+    # Leave these roles in for future reference
     # - hosts_file
     # - role: postgresql
     #  postgresql_version: 9.6
@@ -32,6 +33,6 @@
     #      priv: "ALL"
     #      role_attr_flags: "CREATEDB,CREATEROLE,SUPERUSER"
 
-    #- django
+    - django
     - gunicorn
     - nginx
