@@ -11,7 +11,7 @@
 
   - name: "Clone Repo"
     git: repo=git@github.com:ajumasoftware/main-site.git
-        dest=/home/ubuntu/main-site
+        dest=/home/ubuntu/app
         accept_hostkey=yes
         force=yes
         recursive=no
@@ -49,7 +49,7 @@
     become: yes
     become_user: ubuntu
     pip:
-      requirements: /home/ubuntu/tcart/requirements.txt
+      requirements: /home/ubuntu/app/requirements.txt
       state: latest
       virtualenv: /home/ubuntu/virtualenv/
       virtualenv_python: python3
@@ -57,7 +57,7 @@
   - name: "Run initial django migration"
     shell: /home/ubuntu/virtualenv/bin/python3 manage.py migrate
     args: 
-        chdir: /home/ubuntu/tcart
+        chdir: /home/ubuntu/app
     ignore_errors: True
     become: yes
     become_user: ubuntu
@@ -68,9 +68,9 @@
     when: platform == 'standalone'
 
   - name: "Install fixture data"
-    shell: /home/ubuntu/virtualenv/bin/python3 manage.py loaddata initial.json
+    shell: /home/ubuntu/virtualenv/bin/python3 manage.py loaddata fixtures.json
     args:
-        chdir: /home/ubuntu/tcart
+        chdir: /home/ubuntu/app
     become: yes
     become_user: ubuntu
     retries: 10
@@ -82,7 +82,7 @@
   - name: "run collectstatic"
     shell: /home/ubuntu/virtualenv/bin/python3 manage.py collectstatic --noinput
     args:
-        chdir: /home/ubuntu/tcart
+        chdir: /home/ubuntu/app
     become: yes
     become_user: ubuntu
 

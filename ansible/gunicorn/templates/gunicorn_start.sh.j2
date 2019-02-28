@@ -25,7 +25,7 @@ test -d $RUNDIR || mkdir -p $RUNDIR
 # Start gunicorn
 exec /home/ubuntu/virtualenv/bin/gunicorn {{WSGI}} \
   --bind=unix:/tmp/gunicorn.sock \
-  --name hbxcp \
+  --name app \
   --workers 4 \
   --user=ubuntu \
   --log-level=info  \
@@ -34,4 +34,4 @@ exec /home/ubuntu/virtualenv/bin/gunicorn {{WSGI}} \
   --reload
 
 
-echo "gunicorn start for site: hbxcp"
+echo "gunicorn start for site: ajumasoftware"

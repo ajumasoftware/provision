@@ -4,6 +4,9 @@
   vars:
     # Defaults can be overridden with --extra-vars flag
     db_name: ajuma
+    NAME: app
+    DJANGODIR: /home/ubuntu/app
+    SETTINGS: ajumasoftware.settings
     WSGI: "ajumasoftware.wsgi:application"
     platform: standalone
     repo: git@github.com:ajumasoftware/main-site.git
@@ -29,8 +32,6 @@
     #      priv: "ALL"
     #      role_attr_flags: "CREATEDB,CREATEROLE,SUPERUSER"
 
-    - role: django
-      vars:
-         repo: git@github.com:ajumasoftware/main-site.git
-    #- gunicorn
-    #- nginx
+    #- django
+    - gunicorn
+    - nginx
