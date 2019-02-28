@@ -1,0 +1,58 @@
+show_status_msg() {
+    GREEN='\033[0;32m'
+    RED='\033[0;31m'
+    NC='\033[0m' # No Color
+
+    if [[ $1 == *"inactive"* ]]
+    then
+        echo -e "${RED}$1${NC}"
+    else
+        echo -e "${GREEN}$1${NC}"
+    fi
+}
+pyclean () {
+    find . -type f -name "*.py[co]" -delete
+    find . -type d -name "__pycache__" -delete
+}
+devRestart() {
+    CWD=`pwd`
+
+    cd /home/ubuntu/tcart/
+    echo "Calling pyclean on repo"
+    pyclean
+    sudo service gunicorn restart
+    GUNICORN_STATUS=`sudo service gunicorn status | grep Active | awk '{print $2 $3}'`
+    show_status_msg "gunicorn $GUNICORN_STATUS"
+
+    sudo service nginx restart
+    NGINX_STATUS=`sudo service nginx status | grep Active | awk '{print $2 $3}'`
+    show_status_msg "nginx $NGINX_STATUS"
+
+    #sudo service notebook restart
+    #NOTEBOOK_STATUS=`sudo service notebook status | grep Active | awk '{print $2 $3}'`
+    #show_status_msg "notebook $NOTEBOOK_STATUS"
+
+    YELLOW='\033[0;33m'
+    NC='\033[0m' # No Color
+    SITE=`ifconfig | grep 192 | awk '{print $2}' | tr -d "addr:"`
+    echo -e "Site Available at ${YELLOW}http://$SITE${NC}"
+
+    echo "Collecting Static Files"
+    ./manage.py collectstatic --no-input
+}
+
+source /home/ubuntu/virtualenv/bin/activate
+
+export DJANGO_SETTINGS_MODULE=tcart.settings
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+# Helpful aliases
+# Alias to shell plus
+alias sp='/home/ubuntu/virtualenv/bin/python ./manage.py shell_plus'
+alias gs='git status'
+
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi

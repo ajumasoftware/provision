@@ -6,11 +6,13 @@
     db_name: ajuma
     WSGI: "ajumasoftware.wsgi:application"
     platform: standalone
+    repo: git@github.com:ajumasoftware/main-site.git
+    requirements: /home/ubuntu/tcart/requirements.txt
   roles:
     - set_facts
     - apt_cleanup
     - system_packages
-    #- user
+    - user
     # - hosts_file
     # - role: postgresql
     #  postgresql_version: 9.6
@@ -25,6 +27,6 @@
     #      db: "{{ db_name }}"
     #      priv: "ALL"
     #      role_attr_flags: "CREATEDB,CREATEROLE,SUPERUSER"
-    #- django
+    - django
     #- gunicorn
     #- nginx
