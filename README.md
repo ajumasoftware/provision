@@ -9,5 +9,4 @@ Ansible Scripts to Provision Basic Django Site:  Nginx->Gunicorn
 3) Update permissions on id_rsa:  chmod 400 ~/.ssh/id_rsa
 
 4) Run provision script:
-
-ansible-playbook  -s -u ubuntu ansible/standalone.yml -i hosts -e 'ansible_python_interpreter=/usr/bin/python3' --extra-vars='HOST=standalone'
+ansible-playbook  -s -u ubuntu ansible/standalone.yml -i hosts --extra-vars='HOST=standalone DOMAIN=ajumasoftware.com' -e 'ansible_python_interpreter=/usr/bin/python3'
