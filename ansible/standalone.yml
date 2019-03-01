@@ -5,21 +5,23 @@
     # Defaults can be overridden with --extra-vars flag
     USER: ubuntu
     DB_NAME: ajuma
-    domain: ajumasoftware
+    DOMAIN: ajumasoftware.com
     NAME: app
-    DJANGODIR: /home/ubuntu/app
+    VIRTUALENV: /home/ubuntu/virtualenv
     SOCKFILE: /tmp/gunicorn.sock
-    ACTIVATE: /home/ubuntu/virtualenv/bin/activate
-    NAME: app
     SETTINGS: ajumasoftware.settings
     WSGI: "ajumasoftware.wsgi:application"
+    LOGDIR: /home/ubuntu/logs/
     PLATFORM: standalone
-    requirements: /home/ubuntu/tcart/requirements.txt
+    DJANGODIR: "/home/ubuntu/{{NAME}}"
+    ACTIVATE: "{{VIRTUALENV}}/bin/activate"
+    PYTHON: "{{VIRTUALENV}}/bin/python3"
+    REQUIREMENTS: "{{DJANGODIR}}/requirements.txt"
   roles:
     - set_facts
-    - apt_cleanup
-    - system_packages
-    - user
+    #- apt_cleanup
+    #- system_packages
+    #- user
 
     # Leave these roles in for future reference
     # - hosts_file
@@ -38,5 +40,5 @@
     #      role_attr_flags: "CREATEDB,CREATEROLE,SUPERUSER"
 
     - django
-    - gunicorn
-    - nginx
+    #- gunicorn
+    #- nginx

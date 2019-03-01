@@ -1,6 +1,6 @@
 ---
   - file:
-      path: /home/ubuntu/logs/
+      path: "{{LOGDIR}}"
       state: directory
       mode: 0755
       owner: ubuntu
@@ -41,7 +41,7 @@
 #    shell: sudo chmod -R 777 /etc/letsencrypt; sudo chmod -R 777 /etc/letsencrypt/*
 
   - name: "Setup python3 virtual env"
-    shell: python3 -m venv /home/ubuntu/virtualenv/
+    shell: "python3 -m venv {{VIRTUALENV}}"
     become: yes
     become_user: ubuntu
 
@@ -49,15 +49,15 @@
     become: yes
     become_user: ubuntu
     pip:
-      requirements: /home/ubuntu/app/requirements.txt
+      requirements: "{{REQUIREMENTS}}"
       state: latest
-      virtualenv: /home/ubuntu/virtualenv/
+      virtualenv: "{{VIRTUALENV}}"
       virtualenv_python: python3
 
   - name: "Run initial django migration"
-    shell: /home/ubuntu/virtualenv/bin/python3 manage.py migrate
+    shell: "{{PYTHON}} manage.py migrate"
     args: 
-        chdir: /home/ubuntu/app
+        chdir: "{{DJANGODIR}}"
     ignore_errors: True
     become: yes
     become_user: ubuntu
@@ -68,9 +68,9 @@
     when: PLATFORM == 'standalone'
 
   - name: "Install fixture data"
-    shell: /home/ubuntu/virtualenv/bin/python3 manage.py loaddata fixtures.json
+    shell: "{{PYTHON}} manage.py loaddata fixtures.json"
     args:
-        chdir: /home/ubuntu/app
+        chdir: "{{DJANGODIR}}"
     become: yes
     become_user: ubuntu
     retries: 10
@@ -80,9 +80,9 @@
     when: PLATFORM == 'standalone'
   
   - name: "run collectstatic"
-    shell: /home/ubuntu/virtualenv/bin/python3 manage.py collectstatic --noinput
+    shell: "{{PYTHON}} manage.py collectstatic --noinput"
     args:
-        chdir: /home/ubuntu/app
+        chdir: "{{DJANGODIR}}"
     become: yes
     become_user: ubuntu
 
