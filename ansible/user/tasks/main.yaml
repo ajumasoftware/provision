@@ -1,35 +1,25 @@
 ---
   - user:
-      name: ubuntu
+      name: "{{USER}}"
       shell: /bin/bash
       group: admin
    
   - name: "Reset user permission..."
-    shell: chown -R ubuntu:admin /home/ubuntu
+    shell: "chown -R {{USER}}:admin /home/{{USER}}"
     ignore_errors: true
 
   - name: Set git user.email
     shell: git config --global user.email "john.furr@gmail.com"
     become: yes
-    become_user: ubuntu
+    become_user: "{{USER}}"
   
   - name: Set git user.name
     shell: git config --global user.name "John Furr"
     become: yes
-    become_user: ubuntu
+    become_user: "{{USER}}"
 
   - name: Copy .bash_profile
     template: src=bash_profile.j2 dest=/home/ubuntu/.bash_profile owner=ubuntu group=admin mode=0744
 
   - name: Copy .vimrc file
     template: src=vimrc.j2 dest=/home/ubuntu/.vimrc owner=ubuntu group=admin mode=0744
-
-  #- name: Copy /etc/sudoers
-  #  template: src=sudoers.j2 dest=/etc/sudoers owner=root group=admin mode=0440
-
-  #- name: "Install vim-vue"
-  #  shell:  git clone https://github.com/posva/vim-vue.git ~/.vim/pack/plugins/start/vim-vue
-  #  become: yes
-  #  become_user: ubuntu
-  #  ignore_errors: yes
-

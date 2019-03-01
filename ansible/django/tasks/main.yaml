@@ -3,22 +3,23 @@
       path: "{{LOGDIR}}"
       state: directory
       mode: 0755
-      owner: ubuntu
+      owner: "{{USER}}"
       group: admin
 
   - stat: path=requirements
     register: requirements
 
   - name: "Clone Repo"
-    git: repo=git@github.com:ajumasoftware/main-site.git
-        dest=/home/ubuntu/app
-        accept_hostkey=yes
-        force=yes
-        recursive=no
-        key_file=/home/ubuntu/.ssh/id_rsa
+    git:
+      repo: "{{REPO}}"
+      dest: "{{DJANGODIR}}"
+      accept_hostkey: yes
+      force: yes
+      recursive: no
+      key_file: /home/ubuntu/.ssh/id_rsa
     when: requirements.stat.exists == False
     become: yes
-    become_user: ubuntu
+    become_user: "{{USER}}"
 
 #  - name: "Clone Certs"
 #    git: repo=git@github.com:gnulnx/certs.git
@@ -43,11 +44,11 @@
   - name: "Setup python3 virtual env"
     shell: "python3 -m venv {{VIRTUALENV}}"
     become: yes
-    become_user: ubuntu
+    become_user: "{{USER}}"
 
   - name: "Install virtualenv and requirements"
     become: yes
-    become_user: ubuntu
+    become_user: "{{USER}}"
     pip:
       requirements: "{{REQUIREMENTS}}"
       state: latest
@@ -60,7 +61,7 @@
         chdir: "{{DJANGODIR}}"
     ignore_errors: True
     become: yes
-    become_user: ubuntu
+    become_user: "{{USER}}"
     retries: 10
     delay: 1
     register: result
@@ -72,7 +73,7 @@
     args:
         chdir: "{{DJANGODIR}}"
     become: yes
-    become_user: ubuntu
+    become_user: "{{USER}}"
     retries: 10
     delay: 1
     register: result
@@ -84,5 +85,5 @@
     args:
         chdir: "{{DJANGODIR}}"
     become: yes
-    become_user: ubuntu
+    become_user: "{{USER}}"
 
