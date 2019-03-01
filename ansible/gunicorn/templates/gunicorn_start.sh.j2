@@ -5,8 +5,8 @@ DJANGODIR={{DJANGODIR}}
 SOCKFILE={{SOCKFILE}}
 USER={{USER}}
 NUM_WORKERS=3
-DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:=ajumasoftware.settings}
-DJANGO_WSGI_MODULE=ajumasoftware.wsgi
+DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:={{SETTINGS}}}
+DJANGO_WSGI_MODULE={{WSGI}}
 
 echo "Starting $NAME as `whoami`"
 
@@ -23,7 +23,7 @@ test -d $RUNDIR || mkdir -p $RUNDIR
 # Start your Django Unicorn
 # Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
 # Start gunicorn
-exec {{VIRTUALENV}}/bin/gunicorn {{WSGI}} \
+exec {{VIRTUALENV}}/bin/gunicorn {{WSGI}}:application \
   --bind=unix:{{SOCKFILE}} \
   --name app \
   --workers 4 \

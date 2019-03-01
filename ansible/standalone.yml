@@ -5,17 +5,19 @@
     # Defaults can be overridden with --extra-vars flag
     USER: ubuntu
     REPO: git@github.com:ajumasoftware/main-site.git
+    PLATFORM: standalone
     DB_NAME: ajuma
     DOMAIN: ajumasoftware.com
     NAME: app
-    VIRTUALENV: "/home/{{USER}}/virtualenv"
     SOCKFILE: /tmp/gunicorn.sock
     SETTINGS: ajumasoftware.settings
+    WSGI: ajumasoftware.wsgi
     GIT_EMAIL: "john.furr@gmail.com"
     GIT_USER: "John Furr"
-    WSGI: "ajumasoftware.wsgi:application"
+
+    # DO NOT EDIT BELOW HERE
     LOGDIR: "/home/{{USER}}/logs/"
-    PLATFORM: standalone
+    VIRTUALENV: "/home/{{USER}}/virtualenv"
     DJANGODIR: "/home/{{USER}}/{{NAME}}"
     ACTIVATE: "{{VIRTUALENV}}/bin/activate"
     PYTHON: "{{VIRTUALENV}}/bin/python3"
