@@ -9,17 +9,17 @@
     ignore_errors: true
 
   - name: Set git user.email
-    shell: git config --global user.email "john.furr@gmail.com"
+    shell: "git config --global user.email {{GIT_EMAIL}}"
     become: yes
     become_user: "{{USER}}"
   
   - name: Set git user.name
-    shell: git config --global user.name "John Furr"
+    shell: "git config --global user.name  {{GIT_USER}}"
     become: yes
     become_user: "{{USER}}"
 
   - name: Copy .bash_profile
-    template: src=bash_profile.j2 dest=/home/ubuntu/.bash_profile owner=ubuntu group=admin mode=0744
+    template: src=bash_profile.j2 dest=/home/{{USER}}/.bash_profile owner={{USER}} group=admin mode=0744
 
   - name: Copy .vimrc file
-    template: src=vimrc.j2 dest=/home/ubuntu/.vimrc owner=ubuntu group=admin mode=0744
+    template: src=vimrc.j2 dest=/home/{{USER}}/.vimrc owner={{USER}} group=admin mode=0744

@@ -23,14 +23,14 @@ test -d $RUNDIR || mkdir -p $RUNDIR
 # Start your Django Unicorn
 # Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
 # Start gunicorn
-exec /home/ubuntu/virtualenv/bin/gunicorn {{WSGI}} \
-  --bind=unix:/tmp/gunicorn.sock \
+exec {{VIRTUALENV}}/bin/gunicorn {{WSGI}} \
+  --bind=unix:{{SOCKFILE}} \
   --name app \
   --workers 4 \
   --user=ubuntu \
   --log-level=info  \
-  --error-logfile /home/ubuntu/logs/gunicorn.error \
-  --access-logfile /home/ubuntu/logs/gunicorn.access \
+  --error-logfile {{LOGDIR}}/gunicorn.error \
+  --access-logfile {{LOGDIR}}/gunicorn.access \
   --reload
 
 

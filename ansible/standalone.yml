@@ -11,6 +11,8 @@
     VIRTUALENV: "/home/{{USER}}/virtualenv"
     SOCKFILE: /tmp/gunicorn.sock
     SETTINGS: ajumasoftware.settings
+    GIT_EMAIL: "john.furr@gmail.com"
+    GIT_USER: "John Furr"
     WSGI: "ajumasoftware.wsgi:application"
     LOGDIR: "/home/{{USER}}/logs/"
     PLATFORM: standalone
