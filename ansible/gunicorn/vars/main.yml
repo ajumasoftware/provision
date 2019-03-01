@@ -1,7 +1,0 @@
----
-domain: ajumasoftware
-NAME: app
-DJANGODIR: /home/ubuntu/app
-SOCKFILE: /tmp/gunicorn.sock
-USER: ubuntu
-ACTIVATE: /home/ubuntu/virtualenv/bin/activate
