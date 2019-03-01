@@ -13,12 +13,12 @@
     when: nginxinstalled|success
     register: app
     template: src=standalone.conf.j2 dest=/etc/nginx/sites-available/standalone.conf owner=root group=root
-    when: platform == 'standalone'
+    when: PLATFORM == 'standalone'
 
   - name: Copy /etc/nginx/sites-available/standalone.conf
     when: app|success
     file: src=/etc/nginx/sites-available/standalone.conf dest=/etc/nginx/sites-enabled/standalone.conf state=link
-    when: platform == 'standalone'
+    when: PLATFORM == 'standalone'
 
   - name: Update nginx.conf
     when: nginxinstalled|success

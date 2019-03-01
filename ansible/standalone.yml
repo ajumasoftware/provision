@@ -3,13 +3,17 @@
   hosts: "{{HOST}}"
   vars:
     # Defaults can be overridden with --extra-vars flag
-    db_name: ajuma
+    USER: ubuntu
+    DB_NAME: ajuma
+    domain: ajumasoftware
     NAME: app
     DJANGODIR: /home/ubuntu/app
+    SOCKFILE: /tmp/gunicorn.sock
+    ACTIVATE: /home/ubuntu/virtualenv/bin/activate
+    NAME: app
     SETTINGS: ajumasoftware.settings
     WSGI: "ajumasoftware.wsgi:application"
-    platform: standalone
-    repo: git@github.com:ajumasoftware/main-site.git
+    PLATFORM: standalone
     requirements: /home/ubuntu/tcart/requirements.txt
   roles:
     - set_facts
@@ -25,11 +29,11 @@
     #    - name: ubuntu
     #      pass: 'ajuma'
     #  postgresql_databases:
-    #    - name: "{{ db_name }}"
+    #    - name: "{{ DB_NAME }}"
     #      owner: ubuntu
     #  postgresql_user_privileges:
     #    - name: ubuntu
-    #      db: "{{ db_name }}"
+    #      db: "{{ DB_NAME }}"
     #      priv: "ALL"
     #      role_attr_flags: "CREATEDB,CREATEROLE,SUPERUSER"
 
